@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-Beauty Glow México | Cosmética Coreana Original</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            kbeauty: {
+              rose: '#f43f5e',
+              roseLight: '#fff1f2',
+              cream: '#faf7f2',
+              sage: '#e2ece9',
+              dark: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#faf9f6] text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Promo Top Bar -->
+  <div class="bg-gradient-to-r from-rose-600 via-rose-500 to-pink-500 text-white text-xs font-medium py-2 px-4 text-center tracking-wide flex justify-center items-center gap-2 shadow-sm">
+    <span>🌸 Catálogo sincronizado vía Stylevana México</span>
+    <span class="opacity-60">•</span>
+    <span>Precios actualizados automáticamente 3:00 AM</span>
+    <span class="opacity-60">•</span>
+    <span class="font-bold">Pedidos y confirmación directa por WhatsApp</span>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-rose-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-rose-500 to-pink-400 flex items-center justify-center text-white shadow-md shadow-rose-200 group-hover:scale-105 transition-transform">
+          <i class="fa-solid fa-spa text-xl"></i>
+        </div>
+        <div>
+          <span class="font-serif text-2xl font-bold tracking-tight text-slate-900 block leading-tight">K-BEAUTY <span class="text-rose-500 italic">Glow</span></span>
+          <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase">Cosmética Coreana • México</span>
+        </div>
+      </a>
+
+      <!-- Search Input -->
+      <div class="hidden md:flex flex-1 max-w-md mx-6">
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            id="searchInput"
+            placeholder="Buscar por producto, marca o ingrediente (ej. Centella, Snail, Joseon)..." 
+            class="w-full pl-10 pr-4 py-2.5 rounded-full border border-slate-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-100 text-sm outline-none transition bg-slate-50/50"
+          >
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+          <button id="clearSearchBtn" class="hidden absolute right-3.5 top-3 text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Admin Link -->
+        <a href="/admin" class="text-xs font-semibold px-3 py-2 text-slate-600 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition flex items-center gap-1.5" title="Panel Administrativo">
+          <i class="fa-solid fa-lock text-slate-400"></i>
+          <span class="hidden sm:inline">Admin</span>
+        </a>
+
+        <!-- Cart Button -->
+        <button id="openCartBtn" class="relative bg-rose-50 hover:bg-rose-100 text-rose-600 px-4 py-2.5 rounded-full font-semibold text-sm transition flex items-center gap-2.5 border border-rose-200 shadow-sm active:scale-95">
+          <i class="fa-solid fa-bag-shopping text-base"></i>
+          <span class="hidden sm:inline">Carrito</span>
+          <span id="cartBadgeCount" class="w-5 h-5 bg-rose-600 text-white rounded-full text-xs font-bold flex items-center justify-center">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Search Bar -->
+  <div class="md:hidden px-4 py-3 bg-white border-b border-slate-100">
+    <div class="relative w-full">
+      <input 
+        type="text" 
+        id="mobileSearchInput"
+        placeholder="Buscar productos coreanos..." 
+        class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-200 text-sm outline-none"
+      >
+      <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-rose-50/60 via-[#faf9f6] to-[#faf9f6] pt-10 pb-12 overflow-hidden border-b border-rose-100/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-rose-200 shadow-sm text-xs font-semibold text-rose-600">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Sincronización en tiempo real Stylevana MX
+          </div>
+          <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-slate-900 leading-tight">
+            El secreto de la <br><span class="italic text-rose-500 underline decoration-rose-200">Glass Skin</span> a tu alcance
+          </h1>
+          <p class="text-slate-600 text-base sm:text-lg max-w-xl font-normal leading-relaxed">
+            Descubre los mejores protectores solares, sérums de baba de caracol y tónicos calmantes importados directamente de Corea del Sur con precios transparentes y atención personalizada en México.
+          </p>
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#catalogo" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-6 py-3 rounded-full text-sm shadow-lg shadow-rose-200 transition-all hover:shadow-xl active:scale-95 flex items-center gap-2">
+              <span>Explorar Catálogo</span>
+              <i class="fa-solid fa-arrow-down text-xs"></i>
+            </a>
+            <div class="flex items-center gap-2 text-xs text-slate-500 font-medium">
+              <i class="fa-solid fa-shield-halved text-emerald-500 text-sm"></i>
+              Garantía 100% Original
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Highlights Box -->
+        <div class="lg:col-span-5">
+          <div class="bg-white rounded-3xl p-6 shadow-xl border border-rose-100 relative">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Trending Now en Stylevana</span>
+              </div>
+              <span class="text-[11px] font-semibold text-rose-600 bg-rose-50 px-2.5 py-0.5 rounded-full">Top Ventas</span>
+            </div>
+            
+            <div class="py-4 space-y-3">
+              <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                <div class="w-12 h-12 rounded-lg bg-rose-50 flex items-center justify-center text-rose-500 text-xl font-bold flex-shrink-0">
+                  <i class="fa-solid fa-sun"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">Beauty of Joseon - Relief Sun</div>
+                  <div class="text-[11px] text-slate-400">Protector solar de arroz con probióticos</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 transition">
+                <div class="w-12 h-12 rounded-lg bg-pink-50 flex items-center justify-center text-pink-500 text-xl font-bold flex-shrink-0">
+                  <i class="fa-solid fa-droplet"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-800">COSRX - Snail 96 Mucin</div>
+                  <div class="text-[11px] text-slate-400">Esencia regeneradora e hidratante profunda</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-amber-50 rounded-2xl p-3.5 flex items-center gap-3 border border-amber-200/60 text-xs text-amber-800">
+              <i class="fa-brands fa-whatsapp text-green-600 text-2xl flex-shrink-0"></i>
+              <div>
+                <p class="font-bold">Pago y confirmación directa</p>
+                <p class="text-[11px] text-amber-700">Tu pedido se procesa y coordina al instante vía WhatsApp.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Catalog Section -->
+  <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full">
+    
+    <!-- Controls Header: Categories and Sorting -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">Catálogo de Belleza Coreana</h2>
+        <p class="text-sm text-slate-500 mt-1" id="catalogSummaryText">Cargando productos sincronizados...</p>
+      </div>
+
+      <!-- Sorter and InStock Filter -->
+      <div class="flex flex-wrap items-center gap-3">
+        <label class="inline-flex items-center gap-2 text-xs font-medium text-slate-600 cursor-pointer bg-white px-3 py-2 rounded-xl border border-slate-200">
+          <input type="checkbox" id="filterInStockOnly" class="rounded text-rose-600 focus:ring-rose-500">
+          <span>Solo en stock</span>
+        </label>
+
+        <select id="sortSelect" class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 outline-none focus:border-rose-400">
+          <option value="default">Más recientes</option>
+          <option value="price_asc">Precio: Menor a Mayor</option>
+          <option value="price_desc">Precio: Mayor a Menor</option>
+          <option value="title_asc">Nombre: A - Z</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category Filter Chips -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar" id="categoryChipsContainer">
+      <button data-category="ALL" class="category-chip active whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-rose-600 text-white transition shadow-sm">
+        Todos
+      </button>
+      <button data-category="Protección Solar" class="category-chip whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:border-rose-300 transition">
+        ☀️ Protección Solar
+      </button>
+      <button data-category="Cuidado Facial" class="category-chip whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:border-rose-300 transition">
+        💧 Cuidado Facial
+      </button>
+      <button data-category="Mascarillas" class="category-chip whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:border-rose-300 transition">
+        🧖‍♀️ Mascarillas
+      </button>
+      <button data-category="Cuidado de Ojos y Labios" class="category-chip whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:border-rose-300 transition">
+        👀 Cuidado de Ojos y Labios
+      </button>
+      <button data-category="Herramientas y Accesorios" class="category-chip whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:border-rose-300 transition">
+        ✨ Herramientas y Accesorios
+      </button>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Loading skeletons inserted by JS -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyCatalogState" class="hidden text-center py-16">
+      <div class="w-16 h-16 rounded-full bg-rose-50 text-rose-400 mx-auto flex items-center justify-center text-2xl mb-3">
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+      <h3 class="text-base font-bold text-slate-800">No encontramos productos con ese filtro</h3>
+      <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Prueba buscando otra palabra clave o restablece los filtros para ver todo el catálogo.</p>
+      <button id="resetFiltersBtn" class="mt-4 px-4 py-2 bg-rose-50 text-rose-600 text-xs font-bold rounded-full hover:bg-rose-100 transition">
+        Restablecer filtros
+      </button>
+    </div>
+
+  </main>
+
+  <!-- Slide-over Cart Drawer -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" id="cartBackdrop"></div>
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+        <!-- Drawer Header -->
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-rose-50/50">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center text-sm shadow-sm">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Tu Carrito</h2>
+              <p class="text-xs text-slate-500"><span id="cartDrawerCount">0</span> artículos seleccionados</p>
+            </div>
+          </div>
+          <button id="closeCartBtn" class="w-8 h-8 rounded-full bg-white text-slate-400 hover:text-slate-700 flex items-center justify-center border border-slate-200">
+            <i class="fa-solid fa-xmark text-sm"></i>
+          </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 space-y-4">
+          <!-- Populated by store.js -->
+        </div>
+
+        <!-- Empty Cart Notice -->
+        <div id="emptyCartNotice" class="hidden flex-1 flex flex-col items-center justify-center p-8 text-center">
+          <div class="w-16 h-16 rounded-full bg-rose-50 text-rose-300 flex items-center justify-center text-2xl mb-3">
+            <i class="fa-solid fa-basket-shopping"></i>
+          </div>
+          <p class="text-sm font-bold text-slate-700">Tu carrito está vacío</p>
+          <p class="text-xs text-slate-400 mt-1">Explora nuestro catálogo y agrega tus productos favoritos para iniciar tu pedido.</p>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div id="cartFooter" class="p-5 border-t border-slate-100 bg-slate-50/80 space-y-3">
+          <div class="flex items-center justify-between text-xs text-slate-500">
+            <span>Subtotal estimado</span>
+            <span id="cartSubtotalText" class="font-bold text-slate-700">$0.00 MXN</span>
+          </div>
+          <div class="flex items-center justify-between text-base font-extrabold text-slate-900">
+            <span>Total a Pagar</span>
+            <span id="cartTotalText" class="text-rose-600">$0.00 MXN</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Precios en Pesos Mexicanos (MXN). El costo de envío se coordina vía WhatsApp.</p>
+          <button id="openCheckoutModalBtn" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-2xl text-sm shadow-lg shadow-rose-200 transition active:scale-98 flex items-center justify-center gap-2">
+            <span>Proceder al Checkout</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal (Customer Information & WhatsApp Redirection) -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
+      <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" id="checkoutBackdrop"></div>
+
+      <div class="relative bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:max-w-2xl sm:w-full border border-slate-100">
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-rose-50 to-pink-50 px-6 py-4 border-b border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center text-lg shadow-sm">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-slate-900">Finalizar Pedido con WhatsApp</h3>
+              <p class="text-xs text-slate-500">Ingresa tus datos de envío para generar la orden oficial</p>
+            </div>
+          </div>
+          <button id="closeCheckoutModalBtn" class="text-slate-400 hover:text-slate-600">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Checkout Form -->
+        <form id="checkoutForm" class="p-6 space-y-4">
+          <div class="bg-rose-50/70 rounded-2xl p-3 border border-rose-100 text-xs text-rose-800 flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-info text-rose-500 text-base"></i>
+            <span>Al confirmar, tu pedido se guardará en nuestra base de datos y se abrirá automáticamente tu WhatsApp con el mensaje estructurado de la orden.</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Full Name -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Nombre Completo *</label>
+              <input type="text" id="custName" required placeholder="ej. María Fernanda López" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100">
+            </div>
+
+            <!-- WhatsApp Phone -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Teléfono WhatsApp (10 dígitos en México) *</label>
+              <div class="flex">
+                <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-500 text-xs font-bold">🇲🇽 +52</span>
+                <input type="tel" id="custPhone" required maxlength="10" placeholder="5512345678" class="flex-1 px-3.5 py-2.5 rounded-r-xl border border-slate-200 text-sm outline-none focus:border-rose-400 focus:ring-2 focus:ring-rose-100">
+              </div>
+            </div>
+
+            <!-- Street -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Calle *</label>
+              <input type="text" id="custStreet" required placeholder="ej. Av. Insurgentes Sur" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- Ext Number -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Número Exterior *</label>
+              <input type="text" id="custExterior" required placeholder="ej. 1420" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- Int Number -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Número Interior (opcional)</label>
+              <input type="text" id="custInterior" placeholder="ej. Depto 4B" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- Colonia -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Colonia / Barrio *</label>
+              <input type="text" id="custNeighborhood" required placeholder="ej. Del Valle Sur" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- Postal Code -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Código Postal *</label>
+              <input type="text" id="custPostalCode" required maxlength="5" placeholder="ej. 03100" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- City -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ciudad / Municipio *</label>
+              <input type="text" id="custCity" required placeholder="ej. Benito Juárez" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- State -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Estado *</label>
+              <input type="text" id="custState" required placeholder="ej. Ciudad de México" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+
+            <!-- References -->
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 mb-1">Referencias de Entrega (opcional)</label>
+              <input type="text" id="custReferences" placeholder="ej. Edificio azul frente a farmacia, portón eléctrico" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-rose-400">
+            </div>
+          </div>
+
+          <!-- Total display in checkout -->
+          <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex items-center justify-between">
+            <div>
+              <span class="text-xs text-slate-500 font-semibold block">Total a Pagar del Pedido</span>
+              <span class="text-xs text-emerald-600 font-bold">Incluye margen y productos seleccionados</span>
+            </div>
+            <span id="checkoutTotalDisplay" class="text-xl font-extrabold text-slate-900">$0.00 MXN</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="submitOrderBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl text-sm shadow-lg shadow-emerald-200 transition active:scale-98 flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>Confirmar Orden y Enviar por WhatsApp</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Success Notification Overlay -->
+  <div id="orderSuccessOverlay" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl space-y-4">
+      <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center text-3xl">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <h3 class="text-xl font-bold text-slate-900">¡Pedido Registrado con Éxito!</h3>
+      <p class="text-xs text-slate-600 leading-relaxed">
+        Tu orden ha sido registrada con el número <span class="font-bold text-rose-600 text-sm" id="successOrderNumber">#1001</span>.
+        Si la ventana de WhatsApp no se abrió automáticamente, haz clic en el botón a continuación:
+      </p>
+      <a id="successWhatsAppLink" href="#" target="_blank" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl text-sm shadow-md transition flex items-center justify-center gap-2">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        <span>Abrir Chat de WhatsApp</span>
+      </a>
+      <button id="closeSuccessOverlayBtn" class="text-xs text-slate-400 hover:text-slate-600 pt-2 block mx-auto">
+        Regresar a la tienda
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 mt-20 text-slate-600 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold">
+            <i class="fa-solid fa-spa text-sm"></i>
+          </div>
+          <span class="font-serif font-bold text-lg text-slate-900">K-BEAUTY Glow</span>
+        </div>
+        <p class="text-slate-500 text-xs leading-relaxed">
+          E-commerce especializado en cosmética coreana con catálogo sincronizado diariamente desde Stylevana México a las 3:00 AM.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3">Categorías Populares</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-rose-600">Protectores Solares Químicos y Físicos</a></li>
+          <li><a href="#" class="hover:text-rose-600">Sérums de Centella Asiática</a></li>
+          <li><a href="#" class="hover:text-rose-600">Limpiadores en Aceite y en Gel</a></li>
+          <li><a href="#" class="hover:text-rose-600">Tónicos Calmantes de Heartleaf</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3">Garantía y Seguridad</h4>
+        <ul class="space-y-2">
+          <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i> Fórmulas auténticas 100%</li>
+          <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i> Envíos a todo México</li>
+          <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i> Atención directa por WhatsApp</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-slate-900 mb-3">Acceso Administrativo</h4>
+        <p class="text-slate-500 mb-3">Panel de control protegido para gestionar márgenes, ventas y scraping.</p>
+        <a href="/admin" class="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-semibold transition">
+          <i class="fa-solid fa-user-shield text-rose-500"></i>
+          <span>Ingresar al Admin</span>
+        </a>
+      </div>
+    </div>
+    <div class="border-t border-slate-100 py-4 text-center text-slate-400">
+      &copy; 2026 K-Beauty Glow México. Catálogo sincronizado vía Stylevana México. Todos los derechos reservados.
+    </div>
+  </footer>
+
+  <!-- Store JS Logic -->
+  <script src="/js/store.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,87 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model AdminUser {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String   // Hash con Argon2/Bcrypt
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+}
+
+model Product {
+  id              String      @id @default(uuid())
+  externalId      String      @unique // ID o SKU original en Stylevana
+  title           String
+  brand           String
+  category        String      // Limpiador, Protector Solar, Sérum, etc.
+  stylevanaUrl    String
+  imageUrl        String
+  basePrice       Float       // Precio original en MXN
+  calculatedPrice Float       // Precio con margen aplicado
+  inStock         Boolean     @default(true)
+  orderItems      OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Customer {
+  id             String   @id @default(uuid())
+  phone          String   @unique // Número de WhatsApp (10 dígitos o E.164)
+  name           String
+  street         String
+  exteriorNumber String
+  interiorNumber String?
+  neighborhood   String   // Colonia
+  city           String
+  state          String
+  postalCode     String
+  references     String?
+  orders         Order[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber Int         @unique
+  customerId  String
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  totalAmount Float
+  status      String      @default("PENDING") // PENDING, CONFIRMED, SHIPPED, DELIVERED, CANCELLED
+  items       OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float    // Precio congelado al momento de la compra
+}
+
+model Config {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model ScrapingLog {
+  id               String    @id @default(uuid())
+  startedAt        DateTime  @default(now())
+  completedAt      DateTime?
+  status           String    // SUCCESS, FAILED, RUNNING
+  productsUpserted Int       @default(0)
+  errorMessage     String?
+}

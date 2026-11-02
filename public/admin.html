@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | K-Beauty Glow México</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col font-sans">
+
+  <!-- Login Modal Overlay (Visible when not authenticated) -->
+  <div id="loginOverlay"
+    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative space-y-6">
+      <div class="text-center space-y-2">
+        <div
+          class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-500 to-pink-500 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-rose-500/20">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Panel Administrativo</h2>
+        <p class="text-xs text-slate-400">K-Beauty Glow México • Sistema de Control</p>
+      </div>
+
+      <div class="bg-slate-800/60 p-3 rounded-2xl border border-slate-700/60 text-xs text-slate-300 space-y-1">
+        <div class="text-rose-400 font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-key text-[10px]"></i>
+          <span>Credenciales de Acceso:</span>
+        </div>
+        <div class="flex justify-between font-mono text-[11px] text-slate-400">
+          <span>Usuario: <strong class="text-white">admin@kbeauty.mx</strong></span>
+          <span>Clave: <strong class="text-white">Admin123!</strong></span>
+        </div>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Correo Electrónico</label>
+          <div class="relative">
+            <input type="email" id="adminEmail" required value="admin@kbeauty.mx" placeholder="admin@kbeauty.mx"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
+            <i class="fa-regular fa-envelope absolute left-3.5 top-3 text-slate-500 text-sm"></i>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Contraseña</label>
+          <div class="relative">
+            <input type="password" id="adminPassword" required value="Admin123!" placeholder="••••••••"
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
+            <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-500 text-sm"></i>
+          </div>
+        </div>
+
+        <div id="loginErrorMsg"
+          class="hidden text-xs text-rose-400 bg-rose-950/40 border border-rose-800/60 p-2.5 rounded-xl"></div>
+
+        <button type="submit" id="loginSubmitBtn"
+          class="w-full bg-rose-600 hover:bg-rose-500 text-white font-bold py-3 rounded-xl text-sm shadow-lg shadow-rose-600/30 transition active:scale-98 flex items-center justify-center gap-2">
+          <span>Iniciar Sesión</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+
+      <div class="text-center pt-2">
+        <a href="/"
+          class="text-xs text-slate-400 hover:text-rose-400 transition flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+          <span>Volver a la Tienda Pública</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authenticated Admin Layout -->
+  <div id="adminLayout" class="hidden flex-1 flex flex-col">
+    <!-- Navbar -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/admin" class="flex items-center gap-2.5">
+            <div
+              class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-pink-500 flex items-center justify-center text-white shadow-md shadow-rose-600/30">
+              <i class="fa-solid fa-shield-halved text-base"></i>
+            </div>
+            <div>
+              <span class="font-bold text-white text-base tracking-tight">K-Beauty <span
+                  class="text-rose-500">Admin</span></span>
+              <span class="text-[10px] text-slate-400 block -mt-1 font-mono">Stylevana Auto-Sync</span>
+            </div>
+          </a>
+
+          <div
+            class="hidden sm:flex items-center gap-2 ml-4 px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700/60 text-[11px] text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Cron Activo: <strong>3:00 AM CDMX</strong></span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Botón de Sincronización Manual Inmediata -->
+          <button type="button" id="navbarSyncScraperBtn"
+            class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white text-xs font-bold shadow-md shadow-rose-600/30 transition active:scale-95 cursor-pointer"
+            title="Ejecutar scraping con Stylevana inmediatamente sin esperar a las 3:00 AM">
+            <i class="fa-solid fa-arrows-rotate text-xs"></i>
+            <span class="hidden sm:inline">Sincronizar Scraping Ahora</span>
+            <span class="sm:hidden">Sincronizar</span>
+          </button>
+
+          <a href="/" target="_blank"
+            class="text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-store text-rose-400"></i>
+            <span class="hidden md:inline">Ver Tienda</span>
+          </a>
+
+          <div class="flex items-center gap-2 pl-2 border-l border-slate-800">
+            <div class="text-right hidden sm:block">
+              <div class="text-xs font-bold text-white" id="adminNameDisplay">Directora K-Beauty</div>
+              <div class="text-[10px] text-emerald-400 font-mono">ADMINISTRADOR</div>
+            </div>
+            <button id="logoutBtn"
+              class="text-xs text-slate-400 hover:text-rose-400 p-2 rounded-lg hover:bg-slate-800 transition"
+              title="Cerrar Sesión">
+              <i class="fa-solid fa-right-from-bracket text-base"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Admin Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+
+      <!-- KPI Stat Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <!-- Revenue -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Ventas Totales</span>
+            <div class="w-7 h-7 rounded-lg bg-emerald-950/60 text-emerald-400 flex items-center justify-center">
+              <i class="fa-solid fa-dollar-sign text-xs"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-white" id="kpiRevenue">$0.00 MXN</div>
+          <div class="text-[11px] text-emerald-400 flex items-center gap-1">
+            <i class="fa-solid fa-circle-check text-[10px]"></i>
+            <span>Órdenes no canceladas</span>
+          </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Total Pedidos</span>
+            <div class="w-7 h-7 rounded-lg bg-blue-950/60 text-blue-400 flex items-center justify-center">
+              <i class="fa-solid fa-receipt text-xs"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-white" id="kpiTotalOrders">0</div>
+          <div class="text-[11px] text-slate-400">Registrados en base de datos</div>
+        </div>
+
+        <!-- Pending Orders -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Pendientes</span>
+            <div class="w-7 h-7 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center">
+              <i class="fa-solid fa-clock text-xs"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-amber-400" id="kpiPendingOrders">0</div>
+          <div class="text-[11px] text-amber-300">Requieren confirmación WhatsApp</div>
+        </div>
+
+        <!-- Active Margin -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Margen Activo</span>
+            <div class="w-7 h-7 rounded-lg bg-rose-950/60 text-rose-400 flex items-center justify-center">
+              <i class="fa-solid fa-percent text-xs"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-rose-400" id="kpiMargin">30%</div>
+          <div class="text-[11px] text-rose-300">Aplicado sobre precio Stylevana</div>
+        </div>
+
+        <!-- Products -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl p-4 space-y-2">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Catálogo Activo</span>
+            <div class="w-7 h-7 rounded-lg bg-purple-950/60 text-purple-400 flex items-center justify-center">
+              <i class="fa-solid fa-box text-xs"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-white" id="kpiProducts">0</div>
+          <div class="text-[11px] text-slate-400" id="kpiInStockText">0 en stock</div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="border-b border-slate-800 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <button data-tab="orders"
+          class="admin-tab active px-5 py-3 text-xs font-bold border-b-2 border-rose-500 text-rose-400 flex items-center gap-2 transition">
+          <i class="fa-solid fa-list-check"></i>
+          <span>Pedidos & Ventas</span>
+        </button>
+        <button data-tab="products"
+          class="admin-tab px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Catálogo & Precios</span>
+        </button>
+        <button data-tab="margin"
+          class="admin-tab px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Motor de Precios & Margen</span>
+        </button>
+        <button data-tab="scraper"
+          class="admin-tab px-5 py-3 text-xs font-bold border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center gap-2 transition">
+          <i class="fa-solid fa-robot"></i>
+          <span>Scraping & Logs (Cron 3AM)</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: PEDIDOS -->
+      <section id="tab-orders" class="tab-pane space-y-4">
+        <!-- Filters Bar -->
+        <div
+          class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex-1 max-w-md relative">
+            <input type="text" id="orderSearchInput" placeholder="Buscar por cliente, teléfono o # de orden..."
+              class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 outline-none focus:border-rose-500">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <select id="orderStatusFilter"
+              class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 outline-none focus:border-rose-500">
+              <option value="ALL">Todos los estados</option>
+              <option value="PENDING">Pendientes</option>
+              <option value="CONFIRMED">Confirmados</option>
+              <option value="SHIPPED">Enviados</option>
+              <option value="DELIVERED">Entregados</option>
+              <option value="CANCELLED">Cancelados</option>
+            </select>
+
+            <button id="refreshOrdersBtn"
+              class="bg-slate-700 hover:bg-slate-600 px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-rotate-right text-xs"></i>
+              <span>Refrescar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl overflow-hidden shadow-xl">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead
+                class="bg-slate-900/80 text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-700">
+                <tr>
+                  <th class="py-3 px-4">Orden</th>
+                  <th class="py-3 px-4">Fecha</th>
+                  <th class="py-3 px-4">Cliente & Contacto</th>
+                  <th class="py-3 px-4">Dirección de Envío</th>
+                  <th class="py-3 px-4">Artículos</th>
+                  <th class="py-3 px-4">Total</th>
+                  <th class="py-3 px-4">Estado</th>
+                  <th class="py-3 px-4 text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody" class="divide-y divide-slate-700/60 text-slate-300">
+                <!-- Injected by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: CATÁLOGO & PRODUCTOS -->
+      <section id="tab-products" class="tab-pane hidden space-y-4">
+        <!-- Products Control Bar -->
+        <div
+          class="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex-1 max-w-md relative">
+            <input type="text" id="productSearchInput" placeholder="Buscar por título, marca o SKU..."
+              class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 outline-none focus:border-rose-500">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <select id="productCategoryFilter"
+              class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 outline-none focus:border-rose-500">
+              <option value="ALL">Todas las Categorías</option>
+              <option value="Protección Solar">Protección Solar</option>
+              <option value="Cuidado Facial">Cuidado Facial</option>
+              <option value="Mascarillas">Mascarillas</option>
+              <option value="Cuidado de Ojos y Labios">Cuidado de Ojos y Labios</option>
+              <option value="Herramientas y Accesorios">Herramientas y Accesorios</option>
+            </select>
+
+            <select id="productStockFilter"
+              class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 outline-none focus:border-rose-500">
+              <option value="ALL">Todos los Stocks</option>
+              <option value="true">Solo En Stock</option>
+              <option value="false">Solo Agotados</option>
+            </select>
+
+            <!-- Botón de Sincronización en la pestaña de productos -->
+            <button type="button" id="productsTabSyncBtn"
+              class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold shadow-md shadow-rose-600/25 transition active:scale-95 cursor-pointer whitespace-nowrap"
+              title="Disparar scraping con Stylevana en este momento">
+              <i class="fa-solid fa-arrows-rotate text-xs"></i>
+              <span>Sincronizar Catálogo Ahora</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl overflow-hidden shadow-xl">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead
+                class="bg-slate-900/80 text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-700">
+                <tr>
+                  <th class="py-3 px-4">Producto</th>
+                  <th class="py-3 px-4">Marca & Cat.</th>
+                  <th class="py-3 px-4">SKU Stylevana</th>
+                  <th class="py-3 px-4">Base Stylevana MXN</th>
+                  <th class="py-3 px-4">Precio Venta MXN</th>
+                  <th class="py-3 px-4 text-center">Stock</th>
+                  <th class="py-3 px-4 text-center">Enlace</th>
+                </tr>
+              </thead>
+              <tbody id="productsTableBody" class="divide-y divide-slate-700/60 text-slate-300">
+                <!-- Injected by admin.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: MOTOR DE PRECIOS & MARGEN -->
+      <section id="tab-margin" class="tab-pane hidden space-y-6">
+        <div class="max-w-2xl bg-slate-800/80 border border-slate-700/70 rounded-3xl p-6 sm:p-8 space-y-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-rose-600/20 text-rose-400 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-bold text-white">Configuración del Motor de Precios Dinámico</h3>
+              <p class="text-xs text-slate-400">Define el margen porcentual que se sumará a los precios base extraídos
+                de Stylevana México.</p>
+            </div>
+          </div>
+
+          <!-- Formula Info Box -->
+          <div
+            class="bg-slate-900/90 rounded-2xl p-4 border border-slate-700/60 text-xs font-mono text-slate-300 space-y-1.5">
+            <div class="text-rose-400 font-bold">Fórmula de cálculo:</div>
+            <div>Precio_Venta = Precio_Base_Stylevana × (1 + Margen_% / 100)</div>
+            <div class="text-slate-500 text-[11px]">Ejemplo con 30% margen: $245.00 MXN base ➜ $318.50 MXN precio de
+              venta final.</div>
+          </div>
+
+          <form id="marginConfigForm" class="space-y-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Margen de Ganancia Porcentual (%) *</label>
+              <div class="relative max-w-xs">
+                <input type="number" step="0.5" min="0" max="500" id="marginInput" required
+                  class="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-base font-bold text-white outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500">
+                <span class="absolute right-3.5 top-2.5 text-slate-400 font-bold">%</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-900/60 border border-slate-800">
+              <input type="checkbox" id="recalcAllPricesCheck" checked
+                class="mt-1 rounded text-rose-600 focus:ring-rose-500">
+              <label for="recalcAllPricesCheck" class="text-xs text-slate-300 cursor-pointer">
+                <strong class="text-white block">Recalcular todos los productos inmediatamente</strong>
+                Al guardar, actualizará automáticamente el <code class="text-rose-400">calculatedPrice</code> de todos
+                los productos existentes en la base de datos con el nuevo porcentaje.
+              </label>
+            </div>
+
+            <div class="pt-2 border-t border-slate-700/60">
+              <label class="block text-xs font-bold text-slate-300 mb-1.5">Número de WhatsApp de la Tienda para Pedidos
+                *</label>
+              <input type="text" id="storePhoneInput" placeholder="525512345678"
+                class="w-full max-w-sm px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-sm font-bold text-white outline-none focus:border-rose-500">
+              <span class="text-[11px] text-slate-400 block mt-1">Formato: Código de país + teléfono (ej. 525512345678).
+                Los pedidos se enviarán a esta línea.</span>
+            </div>
+
+            <div id="configSuccessAlert"
+              class="hidden text-xs text-emerald-300 bg-emerald-950/40 border border-emerald-800 p-3 rounded-xl flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-400"></i>
+              <span id="configSuccessMsg">Configuración guardada exitosamente.</span>
+            </div>
+
+            <button type="submit" id="saveMarginBtn"
+              class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-6 py-3 rounded-xl text-xs shadow-lg shadow-rose-600/30 transition flex items-center gap-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Guardar y Aplicar Cambios</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 4: SCRAPING & CRON LOGS -->
+      <section id="tab-scraper" class="tab-pane hidden space-y-6">
+        <!-- Scraper Trigger Box -->
+        <div
+          class="bg-slate-800/80 border border-slate-700/70 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+              <h3 class="text-base font-bold text-white">Sincronizador Automático Stylevana México</h3>
+            </div>
+            <p class="text-xs text-slate-400 max-w-xl leading-relaxed">
+              El proceso Cron se ejecuta automáticamente todos los días a las <strong class="text-rose-400">3:00 AM
+                (Hora CDMX)</strong>.
+              También puedes forzar una sincronización manual en este momento para actualizar precios o agregar nuevos
+              productos al catálogo.
+            </p>
+          </div>
+
+          <button id="triggerScraperBtn"
+            class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold px-6 py-3.5 rounded-2xl text-xs shadow-lg shadow-emerald-600/20 transition flex items-center gap-2.5 flex-shrink-0">
+            <i class="fa-solid fa-arrows-rotate text-sm"></i>
+            <span>Sincronizar Catálogo Ahora</span>
+          </button>
+        </div>
+
+        <!-- Sync Feedback Notice -->
+        <div id="syncFeedbackAlert" class="hidden text-xs p-4 rounded-2xl border flex items-center gap-2.5">
+          <i id="syncFeedbackIcon" class="fa-solid fa-circle-info text-base"></i>
+          <span id="syncFeedbackText"></span>
+        </div>
+
+        <!-- Scraping Logs History Table -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-bold text-slate-200">Historial de Ejecuciones de Scraping</h4>
+            <span class="text-xs text-slate-400">Últimas 20 ejecuciones</span>
+          </div>
+
+          <div class="bg-slate-800/80 border border-slate-700/70 rounded-2xl overflow-hidden shadow-xl">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead
+                  class="bg-slate-900/80 text-slate-400 font-bold uppercase tracking-wider text-[10px] border-b border-slate-700">
+                  <tr>
+                    <th class="py-3 px-4">ID Ejecución</th>
+                    <th class="py-3 px-4">Fecha & Hora</th>
+                    <th class="py-3 px-4">Duración</th>
+                    <th class="py-3 px-4">Estado</th>
+                    <th class="py-3 px-4">Productos Actualizados</th>
+                    <th class="py-3 px-4">Detalle / Error</th>
+                  </tr>
+                </thead>
+                <tbody id="scraperLogsTableBody" class="divide-y divide-slate-700/60 text-slate-300">
+                  <!-- Injected by admin.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Global Toast Notification -->
+  <div id="adminToast"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none max-w-md w-full">
+    <div id="adminToastCard"
+      class="p-4 rounded-2xl border shadow-2xl flex items-start gap-3 bg-slate-900 text-white border-slate-700">
+      <i id="adminToastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5"></i>
+      <div class="flex-1">
+        <h4 id="adminToastTitle" class="text-xs font-bold text-white mb-0.5">Notificación</h4>
+        <p id="adminToastMessage" class="text-xs text-slate-300 leading-relaxed"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin JS Script -->
+  <script src="/js/admin.js"></script>
+</body>
+
+</html>
